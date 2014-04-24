@@ -1,0 +1,25 @@
+﻿Build started 05/11/2013 14:38:43.
+     1>Project "D:\graphics\Graphics For Games\6) Scene Graph\Tutorial6.vcxproj" on node 3 (build target(s)).
+     1>InitializeBuildStatus:
+         Creating "Debug\Tutorial6 - Scene Graph.unsuccessfulbuild" because "AlwaysCreate" was specified.
+       ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt CubeRobot.cpp Renderer.cpp RobotEye.cpp Tutorial6.cpp
+         Renderer.cpp
+     1>d:\graphics\graphics for games\6) scene graph\renderer.cpp(44): error C2511: 'void Renderer::RenderScene(float)' : overloaded member function not found in 'Renderer'
+                 d:\graphics\graphics for games\6) scene graph\renderer.h(9) : see declaration of 'Renderer'
+         CubeRobot.cpp
+     1>d:\graphics\graphics for games\6) scene graph\cuberobot.cpp(56): error C2511: 'CubeRobot::CubeRobot(void)' : overloaded member function not found in 'CubeRobot'
+                 d:\graphics\graphics for games\6) scene graph\cuberobot.h(6) : see declaration of 'CubeRobot'
+     1>d:\graphics\graphics for games\6) scene graph\cuberobot.cpp(114): warning C4244: 'initializing' : conversion from 'double' to 'float', possible loss of data
+         Generating Code...
+         Compiling...
+         RobotEye.cpp
+         Generating Code...
+         Compiling...
+         Tutorial6.cpp
+         Generating Code...
+     1>Done Building Project "D:\graphics\Graphics For Games\6) Scene Graph\Tutorial6.vcxproj" (build target(s)) -- FAILED.
+
+Build FAILED.
+
+Time Elapsed 00:00:02.41

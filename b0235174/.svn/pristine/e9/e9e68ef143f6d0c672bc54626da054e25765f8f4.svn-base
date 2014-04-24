@@ -1,0 +1,17 @@
+﻿Build started 14/11/2013 13:45:44.
+     1>Project "D:\graphics\b0235174\9) Skeletal Animation\Tutorial9.vcxproj" on node 2 (build target(s)).
+     1>InitializeBuildStatus:
+         Creating "Debug\Tutorial 9 - Skeletal Animation.unsuccessfulbuild" because "AlwaysCreate" was specified.
+       ClCompile:
+         All outputs are up-to-date.
+       Link:
+         All outputs are up-to-date.
+         Tutorial9.vcxproj -> D:\graphics\b0235174\Debug\Tutorial 9 - Skeletal Animation.exe
+       FinalizeBuildStatus:
+         Deleting file "Debug\Tutorial 9 - Skeletal Animation.unsuccessfulbuild".
+         Touching "Debug\Tutorial 9 - Skeletal Animation.lastbuildstate".
+     1>Done Building Project "D:\graphics\b0235174\9) Skeletal Animation\Tutorial9.vcxproj" (build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:00.05

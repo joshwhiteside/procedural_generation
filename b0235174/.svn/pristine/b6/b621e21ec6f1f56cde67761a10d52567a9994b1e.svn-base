@@ -1,0 +1,21 @@
+﻿Build started 04/11/2013 16:09:51.
+     1>Project "D:\graphics\Graphics For Games\1) Your First Triangle\Tutorial1.vcxproj" on node 5 (build target(s)).
+     1>InitializeBuildStatus:
+         Creating "Debug\Tutorial1 - Your First Triangle.unsuccessfulbuild" because "AlwaysCreate" was specified.
+       ClCompile:
+         All outputs are up-to-date.
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"D:\graphics\Graphics For Games\Debug\Tutorial1 - Your First Triangle.exe" /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /ManifestFile:"Debug\Tutorial1 - Your First Triangle.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"D:\graphics\Graphics For Games\Debug\Tutorial1 - Your First Triangle.pdb" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"D:\graphics\Graphics For Games\Debug\Tutorial1 - Your First Triangle.lib" /MACHINE:X86 Debug\Renderer.obj
+         Debug\tutorial1.obj /ignore:4099 
+         LINK : D:\graphics\Graphics For Games\Debug\Tutorial1 - Your First Triangle.exe not found or not built by the last incremental link; performing full link
+         Tutorial1.vcxproj -> D:\graphics\Graphics For Games\Debug\Tutorial1 - Your First Triangle.exe
+       Manifest:
+         C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\mt.exe /nologo /verbose /outputresource:"D:\graphics\Graphics For Games\Debug\Tutorial1 - Your First Triangle.exe;#1" /manifest "Debug\Tutorial1 - Your First Triangle.exe.intermediate.manifest"
+       FinalizeBuildStatus:
+         Deleting file "Debug\Tutorial1 - Your First Triangle.unsuccessfulbuild".
+         Touching "Debug\Tutorial1 - Your First Triangle.lastbuildstate".
+     1>Done Building Project "D:\graphics\Graphics For Games\1) Your First Triangle\Tutorial1.vcxproj" (build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:00.29

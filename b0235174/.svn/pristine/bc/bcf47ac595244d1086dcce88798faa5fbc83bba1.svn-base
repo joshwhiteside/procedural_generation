@@ -1,0 +1,48 @@
+﻿Build started 07/11/2013 13:07:54.
+     1>Project "D:\graphics\Graphics For Games\9) Skeletal Animation\Tutorial9.vcxproj" on node 3 (build target(s)).
+     1>InitializeBuildStatus:
+         Creating "Debug\Tutorial 9 - Skeletal Animation.unsuccessfulbuild" because "AlwaysCreate" was specified.
+       ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt renderer.cpp Tutorial9.cpp
+         Tutorial9.cpp
+     1>d:\graphics\nclgl\md5mesh.h(229): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+     1>d:\graphics\nclgl\md5mesh.h(229): error C2143: syntax error : missing ',' before '&'
+     1>d:\graphics\nclgl\md5mesh.h(345): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+     1>d:\graphics\nclgl\md5mesh.h(345): error C2143: syntax error : missing ';' before '&'
+     1>d:\graphics\nclgl\md5mesh.h(345): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+     1>d:\graphics\nclgl\md5node.h(9): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+     1>d:\graphics\nclgl\md5node.h(9): error C2143: syntax error : missing ',' before '&'
+     1>d:\graphics\nclgl\md5node.h(18): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+     1>d:\graphics\nclgl\md5node.h(18): error C2143: syntax error : missing ';' before '&'
+     1>d:\graphics\nclgl\md5node.h(18): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+     1>d:\graphics\graphics for games\9) skeletal animation\renderer.h(15): error C2143: syntax error : missing ';' before '*'
+     1>d:\graphics\graphics for games\9) skeletal animation\renderer.h(15): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+     1>d:\graphics\graphics for games\9) skeletal animation\renderer.h(15): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+         renderer.cpp
+     1>d:\graphics\nclgl\md5mesh.h(229): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+     1>d:\graphics\nclgl\md5mesh.h(229): error C2143: syntax error : missing ',' before '&'
+     1>d:\graphics\nclgl\md5mesh.h(345): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+     1>d:\graphics\nclgl\md5mesh.h(345): error C2143: syntax error : missing ';' before '&'
+     1>d:\graphics\nclgl\md5mesh.h(345): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+     1>d:\graphics\nclgl\md5node.h(9): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+     1>d:\graphics\nclgl\md5node.h(9): error C2143: syntax error : missing ',' before '&'
+     1>d:\graphics\nclgl\md5node.h(18): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+     1>d:\graphics\nclgl\md5node.h(18): error C2143: syntax error : missing ';' before '&'
+     1>d:\graphics\nclgl\md5node.h(18): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+     1>d:\graphics\graphics for games\9) skeletal animation\renderer.h(15): error C2143: syntax error : missing ';' before '*'
+     1>d:\graphics\graphics for games\9) skeletal animation\renderer.h(15): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+     1>d:\graphics\graphics for games\9) skeletal animation\renderer.h(15): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+     1>d:\graphics\graphics for games\9) skeletal animation\renderer.cpp(8): error C2065: 'hellData' : undeclared identifier
+     1>d:\graphics\graphics for games\9) skeletal animation\renderer.cpp(8): error C2061: syntax error : identifier 'MD5FileData'
+     1>d:\graphics\graphics for games\9) skeletal animation\renderer.cpp(9): error C2065: 'hellData' : undeclared identifier
+     1>d:\graphics\graphics for games\9) skeletal animation\renderer.cpp(15): error C2065: 'hellData' : undeclared identifier
+     1>d:\graphics\graphics for games\9) skeletal animation\renderer.cpp(15): error C2227: left of '->AddAnim' must point to class/struct/union/generic type
+                 type is ''unknown-type''
+     1>d:\graphics\graphics for games\9) skeletal animation\renderer.cpp(28): error C2065: 'hellData' : undeclared identifier
+     1>d:\graphics\graphics for games\9) skeletal animation\renderer.cpp(28): error C2541: 'delete' : cannot delete objects that are not pointers
+         Generating Code...
+     1>Done Building Project "D:\graphics\Graphics For Games\9) Skeletal Animation\Tutorial9.vcxproj" (build target(s)) -- FAILED.
+
+Build FAILED.
+
+Time Elapsed 00:00:01.26

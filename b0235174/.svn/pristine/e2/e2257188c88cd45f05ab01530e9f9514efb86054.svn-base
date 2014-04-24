@@ -1,0 +1,32 @@
+﻿Build started 18/11/2013 18:51:42.
+     1>Project "D:\graphics\b0235174\Tutorial 12 Real time lighting B\Tutorial 12 Real time lighting B.vcxproj" on node 3 (build target(s)).
+     1>InitializeBuildStatus:
+         Creating "Debug\Tutorial 12 Real time lighting B project petrol.unsuccessfulbuild" because "AlwaysCreate" was specified.
+       ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt Renderer.cpp tutorial12.cpp
+         Renderer.cpp
+     1>d:\graphics\b0235174\tutorial 12 real time lighting b\renderer.cpp(35): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+     1>d:\graphics\b0235174\tutorial 12 real time lighting b\renderer.cpp(35): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+     1>d:\graphics\b0235174\tutorial 12 real time lighting b\renderer.cpp(35): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+         Generating Code...
+         Skipping... (no relevant changes detected)
+         tutorial12.cpp
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"D:\graphics\b0235174\Debug\Tutorial 12 Real time lighting B project petrol.exe" /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /ManifestFile:"Debug\Tutorial 12 Real time lighting B project petrol.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"D:\graphics\b0235174\Debug\Tutorial 12 Real time lighting B project petrol.pdb" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"D:\graphics\b0235174\Debug\Tutorial 12 Real time lighting B project petrol.lib" /MACHINE:X86 Debug\Renderer.obj
+         Debug\tutorial12.obj
+         LINK : D:\graphics\b0235174\Debug\Tutorial 12 Real time lighting B project petrol.exe not found or not built by the last incremental link; performing full link
+     1>SOIL.lib(image_DXT.obj) : warning LNK4099: PDB 'vc100.pdb' was not found with 'SOIL.lib(image_DXT.obj)' or at 'D:\graphics\b0235174\Debug\vc100.pdb'; linking object as if no debug info
+     1>SOIL.lib(image_helper.obj) : warning LNK4099: PDB 'vc100.pdb' was not found with 'SOIL.lib(image_helper.obj)' or at 'D:\graphics\b0235174\Debug\vc100.pdb'; linking object as if no debug info
+     1>SOIL.lib(SOIL.obj) : warning LNK4099: PDB 'vc100.pdb' was not found with 'SOIL.lib(SOIL.obj)' or at 'D:\graphics\b0235174\Debug\vc100.pdb'; linking object as if no debug info
+     1>SOIL.lib(stb_image_aug.obj) : warning LNK4099: PDB 'vc100.pdb' was not found with 'SOIL.lib(stb_image_aug.obj)' or at 'D:\graphics\b0235174\Debug\vc100.pdb'; linking object as if no debug info
+         Tutorial 12 Real time lighting B.vcxproj -> D:\graphics\b0235174\Debug\Tutorial 12 Real time lighting B project petrol.exe
+       Manifest:
+         C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\mt.exe /nologo /verbose /outputresource:"D:\graphics\b0235174\Debug\Tutorial 12 Real time lighting B project petrol.exe;#1" /manifest "Debug\Tutorial 12 Real time lighting B project petrol.exe.intermediate.manifest"
+       FinalizeBuildStatus:
+         Deleting file "Debug\Tutorial 12 Real time lighting B project petrol.unsuccessfulbuild".
+         Touching "Debug\Tutorial 12 Real time lighting B project petrol.lastbuildstate".
+     1>Done Building Project "D:\graphics\b0235174\Tutorial 12 Real time lighting B\Tutorial 12 Real time lighting B.vcxproj" (build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:01.79

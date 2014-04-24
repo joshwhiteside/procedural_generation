@@ -1,0 +1,17 @@
+﻿Build started 21/11/2013 14:58:31.
+     1>Project "F:\graphics\b0235174\Tutorial 12 Real time lighting B\Tutorial 12 Real time lighting B.vcxproj" on node 4 (build target(s)).
+     1>InitializeBuildStatus:
+         Touching "Debug\Tutorial 12 Real time lighting B project petrol.unsuccessfulbuild".
+       ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt Renderer.cpp
+         Renderer.cpp
+     1>f:\graphics\b0235174\tutorial 12 real time lighting b\renderer.cpp(35): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+     1>f:\graphics\b0235174\tutorial 12 real time lighting b\renderer.cpp(35): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+     1>f:\graphics\b0235174\tutorial 12 real time lighting b\renderer.cpp(35): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+     1>f:\graphics\b0235174\tutorial 12 real time lighting b\renderer.cpp(48): error C2039: 'LoadOBJMesh' : is not a member of 'Mesh'
+                 f:\graphics\nclgl\mesh.h(10) : see declaration of 'Mesh'
+     1>Done Building Project "F:\graphics\b0235174\Tutorial 12 Real time lighting B\Tutorial 12 Real time lighting B.vcxproj" (build target(s)) -- FAILED.
+
+Build FAILED.
+
+Time Elapsed 00:00:10.48

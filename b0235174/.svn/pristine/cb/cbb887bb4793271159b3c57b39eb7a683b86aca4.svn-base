@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="CubeRobot.cpp">
+      <Filter>source files</Filter>
+    </ClCompile>
+    <ClCompile Include="renderer.cpp">
+      <Filter>source files</Filter>
+    </ClCompile>
+    <ClCompile Include="Tutorial7.cpp">
+      <Filter>source files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="CubeRobot.h">
+      <Filter>header files</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer.h">
+      <Filter>header files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="header files">
+      <UniqueIdentifier>{14f3ac59-b562-47e6-a6c6-a0460a19ae55}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source files">
+      <UniqueIdentifier>{f94431f8-787a-48b6-8a68-485d4ebca7bd}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
