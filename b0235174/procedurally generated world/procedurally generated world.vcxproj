@@ -69,11 +69,15 @@
   <ItemGroup>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="noisefunc.cpp" />
+    <ClCompile Include="perlin.cpp" />
     <ClCompile Include="renderer.cpp" />
+    <ClCompile Include="terrainChunk.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="noisefunc.h" />
+    <ClInclude Include="perlin.h" />
     <ClInclude Include="renderer.h" />
+    <ClInclude Include="TerrainChunk.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

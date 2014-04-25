@@ -24,12 +24,24 @@
     <ClCompile Include="noisefunc.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="perlin.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="terrainChunk.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="renderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="noisefunc.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="perlin.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TerrainChunk.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -32,14 +32,25 @@ public:
 	}
 
 	static double findNoise3(double x,double y,double z) {
-		return findNoise(z + findNoise2(x,y));
+		//return findNoise(z + findNoise2(x,y));
+		int n=(int)x+(int)y*59+(int)z*443;
+		n=(n<<13)^n;
+		int nn=(n*(n*n*60493+19990303)+1376312589)&0x7fffffff;
+		return 1.0-((double)nn/1073741824.0);
+
 	}
 
+	//Cosine interpolation
 	static inline double interpolate(double a, double b, double x) {
 		double ft=x * 3.1415927;
 		double f=(1.0-cos(ft))* 0.5;
 		return a*(1.0-f)+b*f;
 	}
+
+	static double hermiteInterpolation(double y0,double y1,double y2,double y3,
+										double mu,
+										double tension,
+										double bias);
 
 	static double getNoise(double x, double y){
 		double floorX = (double)((int) x);
@@ -56,38 +67,11 @@ public:
 		return interpolate(int1,int2,y-floorY);
 	}
 
-	static double getNoise3(double x, double y, double z) {
-		double floorX = (double)((int) x);
-		double floorY = (double)((int) y);
-		double floorZ = (double)((int) z);
+	static double getNoise3(double x, double y, double z);
 
-		double a,b,c,d,e,f,g,h;
+	static double perlinNoise3D(double x, double y, double z, int octaves, double persistence);
 
-		a = findNoise3(floorX, floorY, floorZ);
-		b = findNoise3(floorX + 1, floorY, floorZ);
-
-		c = findNoise3(floorX, floorY+1, floorZ);
-		d = findNoise3(floorX + 1, floorY+1, floorZ);
-
-		e = findNoise3(floorX, floorY, floorZ+1);
-		f = findNoise3(floorX + 1, floorY, floorZ+1);
-
-		g = findNoise3(floorX, floorY+1, floorZ+1);
-		h = findNoise3(floorX + 1, floorY+1, floorZ+1);
-
-		double int1 = interpolate(a,b,x-floorX);
-		double int2 = interpolate(c,d,x-floorX);
-
-		double int3 = interpolate(e,f, x-floorX);
-		double int4 = interpolate(g,h,x-floorX);
-
-		double int21 = interpolate(int1, int2, y-floorY);
-		double int22 = interpolate(int3, int4, y-floorY);
-
-		return interpolate(int21,int22, z-floorZ);
-		//return 0.5;
-
-	}
+	static double getNoise3Hermite(double x, double y, double z, double mu, double tension, double bias);
 
 	static GLuint generate3DNoiseTexture(int xSize, int ySize, int zSize);
 

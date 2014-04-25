@@ -6,6 +6,7 @@
 #include "../../nclgl/heightmap.h"
 #include "../../nclgl/TextMesh.h"
 #include "noisefunc.h"
+#include "TerrainChunk.h"
 
 using namespace std;
 
@@ -18,6 +19,9 @@ public:
 	virtual void RenderScene();
 	virtual void UpdateScene(float msec);
 
+	void RenderNoiseCheck();
+
+
 protected:
 	void reloadShaders();
 	bool loadResources();
@@ -25,9 +29,13 @@ protected:
 	Mesh*	testSquare;
 
 	Shader* texturedShader;
+	Shader* chunkShader;
 
 	GLuint noise64;
 
 	Camera*		camera;
+	float zTimer;
+	
+	TerrainChunk* testChunk;
 
 };
