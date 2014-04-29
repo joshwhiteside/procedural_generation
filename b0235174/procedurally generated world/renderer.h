@@ -36,6 +36,7 @@ protected:
 	Camera*		camera;
 	float zTimer;
 	
+	
 	TerrainChunk* testChunk;
 
 };

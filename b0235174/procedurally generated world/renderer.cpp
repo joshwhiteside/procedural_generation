@@ -16,7 +16,6 @@ Renderer::Renderer(Window &parent) : OGLRenderer(parent) {
 	zTimer = 0.0f;
 	camera->UpdateCamera(1.0f);
 
-	
 }
 
 Renderer::~Renderer() {
@@ -39,11 +38,14 @@ bool Renderer::loadResources() {
 		cout << "fuck" << endl;
 	}
 
-	chunkShader = new Shader(SHADERDIR"chunkVertex.glsl", SHADERDIR"chunkFrag.glsl", SHADERDIR"chunkGeom.glsl"); //
+	chunkShader = new Shader(SHADERDIR"chunkVertex.glsl", SHADERDIR"chunkFrag.glsl"); //
 
 	if(!chunkShader->LinkProgram()){
 		cout << "fuck" << endl;
 	}
+
+	//testChunk->GenerateNewChunk(Vector3(0.0,0.0,0.0));
+
 
 	return true;
 }
@@ -52,6 +54,10 @@ void Renderer::UpdateScene(float msec){
 	camera->UpdateCamera(msec);
 	zTimer += msec * 0.0005;
 	if(zTimer>1.0f) zTimer -=1.0f;
+
+	if(Window::GetKeyboard()->KeyTriggered(KEYBOARD_RETURN)){
+		testChunk->GenerateNewChunk(Vector3(camera->GetPosition().x,0.0f,camera->GetPosition().z));
+	}
 }
 
 void Renderer::RenderScene(void){
