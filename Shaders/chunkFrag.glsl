@@ -1,3 +1,4 @@
+
 #version 150 core
 
 uniform sampler3D threeDTex;
@@ -23,13 +24,13 @@ void main(void)	{
 	
 	float mixVal =  IN.worldPos.y * 0.05;
 	vec4 tempcolour = vec4(0.0);
-	tempcolour.rgb = vec3(IN.worldPos.x * 0.05,IN.worldPos.y * 0.05,IN.worldPos.z * 0.05);//mix(col1,col2,mixVal);
+	tempcolour = IN.colour;
+	//tempcolour.rgb = vec3(IN.worldPos.x * 0.05,IN.worldPos.y * 0.05,IN.worldPos.z * 0.05);//mix(col1,col2,mixVal);
 	//tempcolour = vec4(IN.texCoord,0.0,1.0);
 	tempcolour.a = 1.0;
 	gl_FragColor = tempcolour;
 	
 }
-
 
 
 
@@ -42,7 +43,7 @@ void main(void)	{
 
  uniform vec3  cameraPos ;
  uniform vec4  lightColour = vec4(1.0,1.0,1.0,1.0);
- uniform vec3  lightPos    = vec3(0.0,100.0,0.0);
+ uniform vec3  lightPos    = vec3(16.0,16.0,16.0);
  uniform float lightRadius = 500;
 
  in Vertex {
@@ -57,8 +58,8 @@ void main(void)	{
 
 void main ( void ) {
  
-  vec4 diffuse  = vec4(IN.worldPos.x * 0.05,IN.worldPos.y * 0.05,IN.worldPos.z * 0.05,1.0);
- 
+  //vec4 diffuse  = vec4(IN.worldPos.x * 0.05,IN.worldPos.y * 0.05,IN.worldPos.z * 0.05,1.0);
+ vec4 diffuse = vec4(IN.colour,1.0);
   vec3 incident = normalize ( lightPos - IN.worldPos );
   float lambert = max (0.0 , dot ( incident , IN.normal ));
 

@@ -10,6 +10,9 @@
 
 using namespace std;
 
+const float DRAW_DISTANCE = 500.0f;
+
+
 
 class Renderer : public OGLRenderer		{
 public:
@@ -34,9 +37,14 @@ protected:
 	GLuint noise64;
 
 	Camera*		camera;
+	float cameraGridX, cameraGridZ;
+
 	float zTimer;
 	
-	
-	TerrainChunk* testChunk;
+	void updateTerrain();
+	void RequestNewTerrain(int x, int y);
+	TerrainChunk* findFurthestChunk();
 
+
+	vector<TerrainChunk*> testChunk;
 };
