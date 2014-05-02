@@ -10,7 +10,7 @@ GLuint NoiseFunc::generate3DNoiseTexture(int xSize, int ySize, int zSize) {
 		for(int y= 0; y < ySize; y++) {
 			for(int z = 0; z < zSize; z++) {
 				//double tempNoiseVal = getNoise3(x,y,z);
-				double tempNoiseVal = perlinNoise3D(x,y,z,16,0.25);
+				double tempNoiseVal = perlinNoise3D(x,y,z,9,0.75);
 				unsigned char toPut = (unsigned char)(((tempNoiseVal+1) * 0.5) * 255.0); //Perlin noise in the range 0 to 255.
 				//unsigned int toPut = 128;
 				
@@ -25,8 +25,8 @@ GLuint NoiseFunc::generate3DNoiseTexture(int xSize, int ySize, int zSize) {
 	glBindTexture(GL_TEXTURE_3D, tex);
 	//glTexEnvi(GL_TEXTURE_ENV,GL_TEXTURE_ENV_MODE,GL_REPLACE);
 	
-	glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_R, GL_REPEAT);
@@ -52,7 +52,10 @@ double NoiseFunc::perlinNoise3D(double x, double y, double z, int octaves, doubl
 		double amplitude = pow(persistence,(double)i);
 		
 
-		total += getNoise3Hermite(x*frequency,y*frequency,z*frequency,1,1,1) * amplitude; 
+		
+		double temp = getNoise3Hermite(x*frequency,y*frequency,z*frequency,1,0,0) * amplitude;
+		total += temp;
+		//cout <<"Octave: " << i << "Total : " << total << "TEMP: " << temp <<  endl;
 	}
 
 
@@ -136,9 +139,21 @@ double  NoiseFunc::getNoise3Hermite(double x, double y, double z, double mu, dou
 		g = findNoise3(floorX, floorY+1, floorZ+1);
 		h = findNoise3(floorX + 1, floorY+1, floorZ+1);
 
-		double int1 = hermiteInterpolation(a,b,c,d,mu,tension,bias);
-		double int2 = hermiteInterpolation(e,f,g,h,mu,tension,bias);
+		//double int1 = hermiteInterpolation(a,b,c,d,mu,tension,bias);
+		//double int2 = hermiteInterpolation(e,f,g,h,mu,tension,bias);
 
-		return interpolate(int1,int2,mu);
+		double int1 = interpolate(a,b,mu);
+		double int2 = interpolate(c,d,mu);
+
+		double int3 = interpolate(e,f,mu);
+		double int4 = interpolate(g,h,mu);
+
+		double int21 = interpolate(int1,int2,mu);
+		double int22 = interpolate(int3,int4,mu);
+
+		//cout << "INT 1: " << int21 << "INT2: " << int22 << endl;
+		//cout << "Noises: " << a << endl;
+
+		return interpolate(int21,int22,mu);
 
 }

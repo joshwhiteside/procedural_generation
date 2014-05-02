@@ -2,6 +2,7 @@
 
 #include "../nclgl/Mesh.h"
 #include "noisefunc.h"
+#include <time.h>
 
 #define TERRAIN_GRID_WIDTH 32
 #define TERRAIN_GRID_HEIGHT 32
@@ -13,10 +14,15 @@
 
 #define TERRAIN_NOISE_SIZE 33
 
+#define NOISE_LAYER_1 41
+#define NOISE_LAYER_2 43
+#define NOISE_LAYER_3 47
+
 
 class TerrainChunk : public Mesh {
 public:
 	TerrainChunk(Vector3 wPos);
+	TerrainChunk(int x , int z);
 	~TerrainChunk();
 	void GenerateNewChunk(Vector3 wPos);
 	
@@ -25,14 +31,33 @@ public:
 	void generateNoiseForChunk();
 
 	double noise[TERRAIN_NOISE_SIZE][TERRAIN_NOISE_SIZE][TERRAIN_NOISE_SIZE];
+
+	static double noiseLayer1[NOISE_LAYER_1][NOISE_LAYER_1][NOISE_LAYER_1];
+	static double noiseLayer2[NOISE_LAYER_2][NOISE_LAYER_2][NOISE_LAYER_2];
+	static double noiseLayer3[NOISE_LAYER_3][NOISE_LAYER_3][NOISE_LAYER_3];
+
+	static void initNoiseLayers();
+
 	static int getNumVerticesFromCase(int caseNo);
 
 	Vector3 getWorldPos() {return worldPos;}
-	
+
+	bool isSameGridPos(int x,int z);
+
+	void reassign(int x, int z);
+
+	static int toGridPos(float n);
+	inline static double fetchNoise(Vector3 pos);
+
+
+
 protected:
 	Vector3 worldPos;
-	int getCaseNumber(int x, int y, int z);
 
+	int gridX, gridZ;
+
+	int getCaseNumber(int x, int y, int z);
+	void BufferData();
 };
 
 

@@ -3,6 +3,7 @@
 
 
 Renderer::Renderer(Window &parent) : OGLRenderer(parent) {
+	TerrainChunk::initNoiseLayers(); //Saves loading time later..
 
 	camera = new Camera(0.0f,0.0f,Vector3(0.0f,0.0f,0.0f));
 
@@ -12,7 +13,9 @@ Renderer::Renderer(Window &parent) : OGLRenderer(parent) {
 
 	init = true;
 
-	noise64 = NoiseFunc::generate3DNoiseTexture(128,128,128);
+
+	noise64 = NoiseFunc::generate3DNoiseTexture(32,32,32);
+	
 	zTimer = 0.0f;
 	camera->UpdateCamera(1.0f);
 	glEnable(GL_DEPTH_TEST);
@@ -34,7 +37,7 @@ bool Renderer::loadResources() {
 
 	for(int x = 0; x < 9; x++){
 		for(int z = 0; z < 9; z++){
-			testChunk.push_back(new TerrainChunk(Vector3(32.0f*x,0.0f,32.0f*z)));
+			testChunk.push_back(new TerrainChunk(x,z));
 		}
 	}
 	texturedShader = new Shader(SHADERDIR"texturedVertex.glsl", SHADERDIR"3dtexTestFrag.glsl");
@@ -49,9 +52,6 @@ bool Renderer::loadResources() {
 		cout << "fuck" << endl;
 	}
 
-	//testChunk->GenerateNewChunk(Vector3(0.0,0.0,0.0));
-
-
 	return true;
 }
 
@@ -59,11 +59,12 @@ void Renderer::UpdateScene(float msec){
 	camera->UpdateCamera(msec);
 	zTimer += msec * 0.0005;
 	if(zTimer>1.0f) zTimer -=1.0f;
-	/*
+	updateTerrain();
+	
 	if(Window::GetKeyboard()->KeyTriggered(KEYBOARD_RETURN)){
-		testChunk->GenerateNewChunk(Vector3(camera->GetPosition().x,0.0f,camera->GetPosition().z));
+		NoiseFunc::perlinNoise3D(camera->GetPosition().x,camera->GetPosition().y,camera->GetPosition().z,9,0.75f);
 	}
-	*/
+	
 }
 
 void Renderer::RenderScene(void){
@@ -71,6 +72,9 @@ void Renderer::RenderScene(void){
 	glClearDepth(1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	
 
+	if(Window::GetKeyboard()->KeyDown(KEYBOARD_M)){
+		RenderNoiseCheck();
+	} else {
 
 	//glEnable(GL_CULL_FACE);
 	SetCurrentShader(chunkShader);
@@ -86,7 +90,9 @@ void Renderer::RenderScene(void){
 	
 	glUniform1i(glGetUniformLocation(currentShader->GetProgram(), "threeDTex"),20);
 	glUniform1f(glGetUniformLocation(currentShader->GetProgram(), "timer"),zTimer);
-
+	glUniform3fv(glGetUniformLocation(currentShader->GetProgram(),
+		"cameraPos"), 1, (float*)&camera->GetPosition());
+	
 
 	for(vector<TerrainChunk*>::iterator i = testChunk.begin(); i != testChunk.end(); i++){
 		modelMatrix.ToIdentity();
@@ -96,6 +102,7 @@ void Renderer::RenderScene(void){
 
 		(*i)->Draw();
 	}
+	}
 	SwapBuffers();	
 }
 
@@ -104,9 +111,9 @@ void Renderer::RenderNoiseCheck() {
 	SetCurrentShader(texturedShader);
 	
 	modelMatrix.ToIdentity();
-	modelMatrix.Scale(Vector3(100.0f,100.0f,100.f));
-	projMatrix = Matrix4::Perspective(0.0f,10000.0f,16.0f / 9.0f, 45.0f);
-	viewMatrix = camera->BuildViewMatrix();
+	//modelMatrix.Scale(Vector3(100.0f,100.0f,100.f));
+	projMatrix = Matrix4::Orthographic(-1.0f,1.0f,1.0f,-1.0f,1.0f,-1.0f);
+	viewMatrix.ToIdentity();
 	
 	
 	glActiveTexture(GL_TEXTURE20);
@@ -167,43 +174,35 @@ void	Renderer::updateTerrain(){
 	}
 
 
-void	Renderer::RequestNewTerrain(int x, int y) {
-
-	
+void	Renderer::RequestNewTerrain(int x, int y) {	
 	for(vector<TerrainChunk*>::iterator i = testChunk.begin(); i != testChunk.end(); i++){
-			
-	}
-
-
-	/*
-	for(int i = 0; i < NO_CHUNKS; i++) {
-		if (terrainChunk[i]->isSameGridPos(x,y))
+		if ((*i)->isSameGridPos(x,y))
 			return;
 	}
 
-	MapNode* n = findFurthestChunk();
-	n->reassign(network, x,y);
-	*/
+	TerrainChunk* n = findFurthestChunk();
+	n->reassign(x,y);
+	
 }
 
 TerrainChunk*	Renderer::findFurthestChunk() {
 	TerrainChunk* t;
-	/*
-	MapNode* retChunk = terrainChunk[0];
-	Vector3 cp		  = camera->getWorldPosition();
+	
+	TerrainChunk* retChunk = *testChunk.begin();
+	Vector3 cp		  = camera->GetPosition();
 
 	float highestDistance = 0.0f;
 
-	for(int n = 0; n<NO_CHUNKS; n++) {
-		float currentDistance = Vector3(cp - terrainChunk[n]->getWorldPos()).LengthSq();
+	for(vector<TerrainChunk*>::iterator i = testChunk.begin(); i != testChunk.end(); i++){
+		float currentDistance = Vector3(cp - (*i)->getWorldPos()).LengthSq();
 		if(currentDistance>highestDistance){
-			retChunk = terrainChunk[n];
+			retChunk = (*i);
 			highestDistance = currentDistance;
 		}
 	}
 
 	return retChunk;
-	*/
+	
 	
 	return t;
 }

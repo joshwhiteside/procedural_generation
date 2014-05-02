@@ -33,7 +33,7 @@ public:
 	inline GLuint GetType()			{return type;}
 
 protected:
-	void BufferData();
+	virtual void BufferData();
 
 	GLuint arrayObject;
 	GLuint bufferObject[MAX_BUFFER];
