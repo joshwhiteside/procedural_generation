@@ -28,9 +28,14 @@ public:
 	
 	static GLuint noiseTex;
 
+	//OLD
 	void generateNoiseForChunk();
 
+	void generateThisBlock();
+
 	double noise[TERRAIN_NOISE_SIZE][TERRAIN_NOISE_SIZE][TERRAIN_NOISE_SIZE];
+
+
 
 	static double noiseLayer1[NOISE_LAYER_1][NOISE_LAYER_1][NOISE_LAYER_1];
 	static double noiseLayer2[NOISE_LAYER_2][NOISE_LAYER_2][NOISE_LAYER_2];
@@ -56,6 +61,10 @@ protected:
 
 	int gridX, gridZ;
 
+	//World position
+	int getCaseNumber(Vector3 pos);
+
+	//OLD
 	int getCaseNumber(int x, int y, int z);
 	void BufferData();
 };

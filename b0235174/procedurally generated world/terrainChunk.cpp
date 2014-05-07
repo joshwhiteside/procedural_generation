@@ -158,7 +158,35 @@ int TerrainChunk::getCaseNumber(int x, int y, int z){
 		int toCheckZ = z + gridCheckPoints[i].z;
 
 		float val = noise[toCheckX][toCheckY][toCheckZ];
+
+
+		//FLOOR + CEILING TEST
+		//if(val < 0.5) caseNo |= valToOr;
+
+		//NOISE TEST
+		//WHO KNOWS WHY THE RANGE OF THE NOISE IS KINDA IN THE RANGE -6 to 6 :'( 
+		
+		if(val > 0.25) caseNo |= valToOr;
+
+		valToOr *= 2;
+
+	}
+
+	return caseNo;
+}
+
+int TerrainChunk::getCaseNumber(Vector3 pos){
 	
+	int caseNo = 0;
+	/*
+	int valToOr = 1;
+	for(int i = 0; i < 8; i++){
+		int toCheckX = x + gridCheckPoints[i].x;
+		int toCheckY = y + gridCheckPoints[i].y;
+		int toCheckZ = z + gridCheckPoints[i].z;
+
+		float val = noise[toCheckX][toCheckY][toCheckZ];
+
 
 		//FLOOR + CEILING TEST
 		//if(val < 0.5) caseNo |= valToOr;
@@ -171,9 +199,11 @@ int TerrainChunk::getCaseNumber(int x, int y, int z){
 		valToOr *= 2;
 
 	}
+	*/
 
 	return caseNo;
 }
+
 
 //Temp..
 int TerrainChunk::getNumVerticesFromCase(int caseNo){
@@ -186,6 +216,8 @@ int TerrainChunk::getNumVerticesFromCase(int caseNo){
 	return retValue;
 }
 
+
+//OLD
 void TerrainChunk::generateNoiseForChunk(){
 	double Lowest = 0;
 	double Highest= 0;
@@ -206,42 +238,29 @@ void TerrainChunk::generateNoiseForChunk(){
 				
 				//noiseInput = NoiseFunc::perlinNoise3D(samplePoint.x,samplePoint.y,samplePoint.z,8,1.0);
 				
-				if(y<1) noiseInput =1;
+				
 				/*	
 				noiseInput += NoiseFunc::perlinNoise3D(pow(samplePoint.x,2),sin(samplePoint.y),samplePoint.z,8,0.25) * 0.25;
 				noiseInput += NoiseFunc::perlinNoise3D(samplePoint.x,cos(samplePoint.y),tan(samplePoint.z),8,0.25) * 0.5;
 				noiseInput += NoiseFunc::perlinNoise3D(tan(samplePoint.x),(samplePoint.y),(samplePoint.z),8,0.25) * 0.25;
 				*/
 				
-				/*
-				noiseInput  += NoiseFunc::perlinNoise3D(samplePoint.x,samplePoint.y,samplePoint.z,8,0.25) * sin((samplePoint.x +samplePoint.z) * 0.00001);
-
-
-
-				noiseInput  += NoiseFunc::perlinNoise3D(samplePoint.x,samplePoint.y,samplePoint.z,8,0.25) * 0.25;
-
+				//noiseInput += fetchNoise(samplePoint);
+				//noiseInput = noiseInput * noiseInput;
 				
-				samplePoint = samplePoint * 1.54;
-
-				noiseInput  += NoiseFunc::perlinNoise3D(samplePoint.x,samplePoint.y,samplePoint.z,8,0.25) * 0.125;
-
+				noiseInput = fetchNoise(samplePoint);
 				
-				samplePoint = samplePoint * 1.16;
-
-				noiseInput  += NoiseFunc::perlinNoise3D(samplePoint.x,samplePoint.y,samplePoint.z,8,0.25) * 0.0625;
-
+				double noiseY = 1.0 / TERRAIN_NOISE_SIZE;
+				noiseY *= y;
+				noiseY = 1.0 - noiseY;
+				//if(noiseY!=1)cout << noiseY << endl;
 				
-				samplePoint = samplePoint * 1.17;
+				noiseInput *= noiseY * noiseY * noiseY * noiseY;
+				
 
-				noiseInput  += NoiseFunc::perlinNoise3D(samplePoint.x,samplePoint.y,samplePoint.z,8,0.25) * 0.03125;
-
-				*/
-
-				noiseInput += fetchNoise(samplePoint);
-
+				if(y<2) noiseInput =1;
 				if(y==32) noiseInput = -1;
-			
-
+				
 				noise[x][y][z] = noiseInput;
 				if(noiseInput > Highest) Highest = noiseInput;
 				if(noiseInput < Lowest)  Lowest = noiseInput;
@@ -252,6 +271,31 @@ void TerrainChunk::generateNoiseForChunk(){
 
 	cout << "Lowest :" <<Lowest	 << endl;
 	cout << "Highest :"<<Highest << endl;
+}
+
+void TerrainChunk::generateThisBlock(){
+	
+	for(int x = 0; x < TERRAIN_NOISE_SIZE; x++){
+		for(int y = 0; y < TERRAIN_NOISE_SIZE; y++){
+			for(int z = 0; z < TERRAIN_NOISE_SIZE; z++){
+				Vector3 currentCellPos = Vector3(x * TERRAIN_SPACING_X, y * TERRAIN_SPACING_Y, z * TERRAIN_SPACING_Z);
+				Vector3 samplePoint = (currentCellPos + worldPos);
+				
+				samplePoint.x = sin(samplePoint.x * 0.5);
+				//TEMP
+				double noiseInput = 0;
+				
+				
+				if(y<3) noiseInput =1;
+			
+
+				if(y==32) noiseInput = -1;
+				
+				
+			}
+		}
+	}
+
 }
 
 void TerrainChunk::BufferData()	{
@@ -367,8 +411,8 @@ double TerrainChunk::fetchNoise(Vector3 pos){
 	double total = 0;
 
 
-	total+= noiseLayer1[x%NOISE_LAYER_1][y%NOISE_LAYER_1][z%NOISE_LAYER_1];
-	total+= noiseLayer2[x%NOISE_LAYER_2][y%NOISE_LAYER_2][z%NOISE_LAYER_2];
+//	total+= noiseLayer1[x%NOISE_LAYER_1][y%NOISE_LAYER_1][z%NOISE_LAYER_1];
+//	total+= noiseLayer2[x%NOISE_LAYER_2][y%NOISE_LAYER_2][z%NOISE_LAYER_2];
 	total+= noiseLayer3[x%NOISE_LAYER_3][y%NOISE_LAYER_3][z%NOISE_LAYER_3];
 
 	return total;

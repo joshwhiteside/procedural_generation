@@ -14,7 +14,7 @@ Renderer::Renderer(Window &parent) : OGLRenderer(parent) {
 	init = true;
 
 
-	noise64 = NoiseFunc::generate3DNoiseTexture(32,32,32);
+	noise64 = NoiseFunc::generate3DNoiseTexture(64,64,64);
 	
 	zTimer = 0.0f;
 	camera->UpdateCamera(1.0f);
@@ -34,6 +34,7 @@ void Renderer::reloadShaders() {
 
 bool Renderer::loadResources() {
 	testSquare = Mesh::GenerateQuad();
+	skyquad = Mesh::GenerateQuad();
 
 	for(int x = 0; x < 9; x++){
 		for(int z = 0; z < 9; z++){
@@ -52,6 +53,23 @@ bool Renderer::loadResources() {
 		cout << "fuck" << endl;
 	}
 
+	
+	skyShader = new Shader(SHADERDIR"skyboxVertex.glsl", SHADERDIR"skyboxFragment.glsl"); //
+
+	if(!skyShader->LinkProgram()){
+		cout << "fuck" << endl;
+	}
+
+	cloudShader = new Shader(SHADERDIR"skyboxVertex.glsl", SHADERDIR"cloudFragment.glsl"); //
+
+	if(!cloudShader->LinkProgram()){
+		cout << "fuck" << endl;
+	}
+
+	light = new Light();
+	light->SetColour(Vector4(1.0,1.0,1.0,1.0));
+	light->SetRadius(1000.0f);
+
 	return true;
 }
 
@@ -60,6 +78,9 @@ void Renderer::UpdateScene(float msec){
 	zTimer += msec * 0.0005;
 	if(zTimer>1.0f) zTimer -=1.0f;
 	updateTerrain();
+
+	light->SetPosition(camera->GetPosition());
+
 	
 	if(Window::GetKeyboard()->KeyTriggered(KEYBOARD_RETURN)){
 		NoiseFunc::perlinNoise3D(camera->GetPosition().x,camera->GetPosition().y,camera->GetPosition().z,9,0.75f);
@@ -76,35 +97,68 @@ void Renderer::RenderScene(void){
 		RenderNoiseCheck();
 	} else {
 
-	//glEnable(GL_CULL_FACE);
-	SetCurrentShader(chunkShader);
 
-	modelMatrix.ToIdentity();
-	projMatrix = Matrix4::Perspective(1.0f,DRAW_DISTANCE,
-		(float)width / (float)height, 45.0f);
+		RenderSky();
+		glEnable(GL_CULL_FACE);
+		SetCurrentShader(chunkShader);
 
-	viewMatrix = camera->BuildViewMatrix();
-	glActiveTexture(GL_TEXTURE20);
-	glBindTexture(GL_TEXTURE_3D,noise64);
-	
-	
-	glUniform1i(glGetUniformLocation(currentShader->GetProgram(), "threeDTex"),20);
-	glUniform1f(glGetUniformLocation(currentShader->GetProgram(), "timer"),zTimer);
-	glUniform3fv(glGetUniformLocation(currentShader->GetProgram(),
-		"cameraPos"), 1, (float*)&camera->GetPosition());
-	
+		SetShaderLight(*light);
 
-	for(vector<TerrainChunk*>::iterator i = testChunk.begin(); i != testChunk.end(); i++){
 		modelMatrix.ToIdentity();
-		modelMatrix = Matrix4::Translation((*i)->getWorldPos());
+		projMatrix = Matrix4::Perspective(1.0f,DRAW_DISTANCE,
+			(float)width / (float)height, 45.0f);
 
-		UpdateShaderMatrices();
+		viewMatrix = camera->BuildViewMatrix();
+		glActiveTexture(GL_TEXTURE20);
+		glBindTexture(GL_TEXTURE_3D,noise64);
+	
+	
+		glUniform1i(glGetUniformLocation(currentShader->GetProgram(), "noiseTex"),20);
+		glUniform1f(glGetUniformLocation(currentShader->GetProgram(), "timer"),zTimer);
+		glUniform3fv(glGetUniformLocation(currentShader->GetProgram(),
+			"cameraPos"), 1, (float*)&camera->GetPosition());
+	
 
-		(*i)->Draw();
-	}
+		for(vector<TerrainChunk*>::iterator i = testChunk.begin(); i != testChunk.end(); i++){
+			modelMatrix.ToIdentity();
+			modelMatrix = Matrix4::Translation((*i)->getWorldPos() * TERRAIN_DRAW_SIZE) * Matrix4::Scale(Vector3(TERRAIN_DRAW_SIZE,TERRAIN_DRAW_SIZE,TERRAIN_DRAW_SIZE));
+			//modelMatrix = Matrix4::Translation((*i)->getWorldPos() * TERRAIN_DRAW_SIZE);
+
+
+			UpdateShaderMatrices();
+
+			(*i)->Draw();
+		}
 	}
 	SwapBuffers();	
 }
+
+void Renderer::RenderSky() {
+	glDepthMask(GL_FALSE);
+	SetCurrentShader(skyShader);
+	modelMatrix.ToIdentity();
+	projMatrix = Matrix4::Perspective(1.0f,DRAW_DISTANCE,
+			(float)width / (float)height, 45.0f);
+
+	viewMatrix = camera->BuildViewMatrix();
+	UpdateShaderMatrices();
+
+	skyquad->Draw();
+
+	glUseProgram(0);
+
+	SetCurrentShader(cloudShader);
+
+	UpdateShaderMatrices();
+
+	skyquad->Draw();
+
+	glUseProgram(0);
+
+	glDepthMask(GL_TRUE);
+
+}
+
 
 void Renderer::RenderNoiseCheck() {
 	//Messy test shit
@@ -136,8 +190,8 @@ void	Renderer::updateTerrain(){
 	
 		int x = (int)camera->GetPosition().x;
 		int y = (int)camera->GetPosition().z;
-		x = x / TERRAIN_GRID_WIDTH;
-		y = y / TERRAIN_GRID_WIDTH;
+		x = x / (TERRAIN_GRID_WIDTH * TERRAIN_DRAW_SIZE);
+		y = y / (TERRAIN_GRID_WIDTH * TERRAIN_DRAW_SIZE);
 		if(camera->GetPosition().x<0) x--;
 		if(camera->GetPosition().z<0) y--;
 

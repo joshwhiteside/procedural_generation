@@ -10,9 +10,8 @@
 
 using namespace std;
 
-const float DRAW_DISTANCE = 500.0f;
-
-
+const float DRAW_DISTANCE = 10000.0f;
+#define TERRAIN_DRAW_SIZE 25.0f
 
 class Renderer : public OGLRenderer		{
 public:
@@ -23,16 +22,21 @@ public:
 	virtual void UpdateScene(float msec);
 
 	void RenderNoiseCheck();
-
+	void RenderSky();
 
 protected:
 	void reloadShaders();
 	bool loadResources();
 
 	Mesh*	testSquare;
+	Mesh*	skyquad;
 
 	Shader* texturedShader;
 	Shader* chunkShader;
+	Shader* cloudShader;
+	Shader* skyShader;
+
+	Light* light;
 
 	GLuint noise64;
 

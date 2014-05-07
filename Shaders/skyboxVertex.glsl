@@ -1,9 +1,8 @@
 #version 150 core
 
-uniform mat4 modelMatrix;
 uniform mat4 viewMatrix;
 uniform mat4 projMatrix;
-
+uniform mat4 skyMatrix;
 in vec3 position;
 
 out Vertex	{
@@ -11,8 +10,8 @@ out Vertex	{
 } OUT;
 
 void main(void){
-	vec3 tempPos = position - vec3(0,0,1);
+	vec3 tempPos = position - vec3(0,0,1.0);
 	OUT.normal	 = transpose(mat3(viewMatrix)) * normalize(tempPos);
 	//OUT.normal	 = inverse(mat3(viewMatrix)) * normalize(tempPos);
-	gl_Position	 = projMatrix * vec4(tempPos, 1.0);
+	gl_Position	 = skyMatrix * projMatrix * vec4(tempPos, 1.0);
 }
