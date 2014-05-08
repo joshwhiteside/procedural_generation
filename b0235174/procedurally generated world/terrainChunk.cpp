@@ -151,6 +151,9 @@ void TerrainChunk::GenerateNewChunk(Vector3 wPos) {
 }
 
 int TerrainChunk::getCaseNumber(int x, int y, int z){
+	Vector3 currentPos = worldPos + Vector3(x * TERRAIN_SPACING_X, y * TERRAIN_SPACING_Y, z * TERRAIN_SPACING_Z);
+				
+	
 	int caseNo = 0;
 	int valToOr = 1;
 	for(int i = 0; i < 8; i++){
@@ -161,13 +164,21 @@ int TerrainChunk::getCaseNumber(int x, int y, int z){
 		float val = noise[toCheckX][toCheckY][toCheckZ];
 
 
+
+
+
 		//FLOOR + CEILING TEST
 		//if(val < 0.5) caseNo |= valToOr;
 
 		//NOISE TEST
 		//WHO KNOWS WHY THE RANGE OF THE NOISE IS KINDA IN THE RANGE -6 to 6 :'( 
 		
-		if(val > 0.25) caseNo |= valToOr;
+		double sparsity = sin((currentPos.x + currentPos.z) * 0.01); 
+		//cout << sparsity << endl;
+
+		if(val > sparsity) caseNo |= valToOr;
+
+
 
 		valToOr *= 2;
 
@@ -258,7 +269,7 @@ void TerrainChunk::generateNoiseForChunk(){
 				
 				noiseInput *= noiseY * noiseY * noiseY * noiseY;
 				
-				if(y>24) noiseInput -=0.5;
+				if(y>24) noiseInput -= 0.5;
 				if(y<2) noiseInput =1;
 				if(y==32) noiseInput = -1;
 				
@@ -405,7 +416,7 @@ void TerrainChunk::initNoiseLayers(){
 	for(int x = 0; x < NOISE_LAYER_4; x++){
 		for(int y = 0; y < NOISE_LAYER_4; y++){
 			for(int z = 0; z < NOISE_LAYER_4; z++){
-				noiseLayer4[x][y][z] = NoiseFunc::perlinNoise3D(samplePoint.x+x,samplePoint.y+y,samplePoint.z+z,8,0.06125 * 0.5);
+				noiseLayer4[x][y][z] = NoiseFunc::perlinNoise3D(samplePoint.x+x,samplePoint.y+y,samplePoint.z+z,8,0.06125);
 			}
 		}
 	}
@@ -430,5 +441,5 @@ double TerrainChunk::fetchNoise(Vector3 pos){
 	total+= noiseLayer3[x%NOISE_LAYER_3][y%NOISE_LAYER_3][z%NOISE_LAYER_3];
 	total+= noiseLayer4[x%NOISE_LAYER_4][y%NOISE_LAYER_4][z%NOISE_LAYER_4];
 
-	return total / 3.0;
+	return total;
 }
