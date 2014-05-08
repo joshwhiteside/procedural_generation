@@ -36,8 +36,8 @@ bool Renderer::loadResources() {
 	testSquare = Mesh::GenerateQuad();
 	skyquad = Mesh::GenerateQuad();
 
-	for(int x = 0; x < 9; x++){
-		for(int z = 0; z < 9; z++){
+	for(int x = 0; x < CHUNK_GRID_SIZE; x++){
+		for(int z = 0; z < CHUNK_GRID_SIZE; z++){
 			testChunk.push_back(new TerrainChunk(x,z));
 		}
 	}
@@ -68,7 +68,7 @@ bool Renderer::loadResources() {
 
 	light = new Light();
 	light->SetColour(Vector4(1.0,1.0,1.0,1.0));
-	light->SetRadius(1000.0f);
+	light->SetRadius(LIGHT_RADIUS);
 
 	return true;
 }
@@ -196,36 +196,20 @@ void	Renderer::updateTerrain(){
 		if(camera->GetPosition().z<0) y--;
 
 
-
+		
 		if(x!=cameraGridX || y!=cameraGridZ) {
-			RequestNewTerrain(x,y);
-			if(x!=cameraGridX)		{
-				int step;
-				if(x<cameraGridX) step=-1;
-				if(x>cameraGridX) step=1;
-				RequestNewTerrain(x,y-1);
-				RequestNewTerrain(x,y+1);
-				//RequestNewTerrain(x+(2*step),y);
-				RequestNewTerrain(x+step,y);
-				//RequestNewTerrain(x+step,y-1);
-				//RequestNewTerrain(x+step,y+1);
-			}	
-			if(y!=cameraGridZ){
-				int step;
-				if(y<cameraGridZ) step=-1;
-				if(y>cameraGridZ) step=1;
-
-				RequestNewTerrain(x+1,y);
-				RequestNewTerrain(x-1,y);
-				//RequestNewTerrain(x,y+(2*step));
-				RequestNewTerrain(x,y+step);
-				//RequestNewTerrain(x-1,y+step);
-				//RequestNewTerrain(x+1,y+step);
+			x-= CHUNK_LOAD_RADIUS / 2;
+			y-= CHUNK_LOAD_RADIUS / 2;
+			for(int m = 0; m < CHUNK_LOAD_RADIUS; m++){
+				for(int n = 0; n < CHUNK_LOAD_RADIUS; n++){
+					RequestNewTerrain(m+x,n+y);
+				}
 			}
 		}
+			
 		cameraGridX = x;
 		cameraGridZ = y;
-	}
+}
 
 
 void	Renderer::RequestNewTerrain(int x, int y) {	

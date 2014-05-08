@@ -11,7 +11,10 @@
 using namespace std;
 
 const float DRAW_DISTANCE = 10000.0f;
+const float LIGHT_RADIUS = 10000.0f;
 #define TERRAIN_DRAW_SIZE 25.0f
+#define CHUNK_LOAD_RADIUS 4
+#define CHUNK_GRID_SIZE 9
 
 class Renderer : public OGLRenderer		{
 public:

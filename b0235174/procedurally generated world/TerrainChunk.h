@@ -12,11 +12,12 @@
 #define TERRAIN_SPACING_Y 1.0
 #define TERRAIN_SPACING_Z 1.0
 
-#define TERRAIN_NOISE_SIZE 33
+#define TERRAIN_NOISE_SIZE TERRAIN_GRID_WIDTH + 1
 
 #define NOISE_LAYER_1 41
 #define NOISE_LAYER_2 43
 #define NOISE_LAYER_3 47
+#define NOISE_LAYER_4 53
 
 
 class TerrainChunk : public Mesh {
@@ -40,6 +41,7 @@ public:
 	static double noiseLayer1[NOISE_LAYER_1][NOISE_LAYER_1][NOISE_LAYER_1];
 	static double noiseLayer2[NOISE_LAYER_2][NOISE_LAYER_2][NOISE_LAYER_2];
 	static double noiseLayer3[NOISE_LAYER_3][NOISE_LAYER_3][NOISE_LAYER_3];
+	static double noiseLayer4[NOISE_LAYER_4][NOISE_LAYER_4][NOISE_LAYER_4];
 
 	static void initNoiseLayers();
 
