@@ -10,9 +10,7 @@ Renderer::Renderer(Window &parent) : OGLRenderer(parent) {
 	loadResources();
 	reloadShaders();
 
-
 	init = true;
-
 
 	noise64 = NoiseFunc::generate3DNoiseTexture(64,64,64);
 	
@@ -23,6 +21,9 @@ Renderer::Renderer(Window &parent) : OGLRenderer(parent) {
 }
 
 Renderer::~Renderer() {
+	delete light;
+	delete skyquad;
+	delete testSquare;
 
 
 }
@@ -54,13 +55,13 @@ bool Renderer::loadResources() {
 	}
 
 	
-	skyShader = new Shader(SHADERDIR"skyboxVertex.glsl", SHADERDIR"skyboxFragment.glsl"); //
+	skyShader = new Shader(SHADERDIR"skyboxVertex.glsl", SHADERDIR"tempTestFrag.glsl"); //
 
 	if(!skyShader->LinkProgram()){
 		cout << "fuck" << endl;
 	}
 
-	cloudShader = new Shader(SHADERDIR"skyboxVertex.glsl", SHADERDIR"cloudFragment.glsl"); //
+	cloudShader = new Shader(SHADERDIR"skyboxVertex.glsl", SHADERDIR"tempTestFrag.glsl"); //
 
 	if(!cloudShader->LinkProgram()){
 		cout << "fuck" << endl;
@@ -99,7 +100,7 @@ void Renderer::RenderScene(void){
 
 
 		RenderSky();
-		glEnable(GL_CULL_FACE);
+
 		SetCurrentShader(chunkShader);
 
 		SetShaderLight(*light);
@@ -134,29 +135,35 @@ void Renderer::RenderScene(void){
 }
 
 void Renderer::RenderSky() {
+	
 	glDepthMask(GL_FALSE);
+	glDisable(GL_CULL_FACE);
 	SetCurrentShader(skyShader);
-	modelMatrix.ToIdentity();
+	
 	projMatrix = Matrix4::Perspective(1.0f,DRAW_DISTANCE,
 			(float)width / (float)height, 45.0f);
-
+	
+	//projMatrix = Matrix4::Perspective(1.0f,10000.0f,(float)width/height,45.0f);
 	viewMatrix = camera->BuildViewMatrix();
+	modelMatrix.ToIdentity();
+
 	UpdateShaderMatrices();
 
 	skyquad->Draw();
 
 	glUseProgram(0);
-
+	/*
 	SetCurrentShader(cloudShader);
 
 	UpdateShaderMatrices();
 
 	skyquad->Draw();
-
+	*/
 	glUseProgram(0);
-
+	
 	glDepthMask(GL_TRUE);
-
+	
+	glEnable(GL_CULL_FACE);
 }
 
 
@@ -180,9 +187,6 @@ void Renderer::RenderNoiseCheck() {
 	UpdateShaderMatrices();
 
 	testSquare->Draw();
-
-
-
 }
 
 
@@ -223,9 +227,7 @@ void	Renderer::RequestNewTerrain(int x, int y) {
 	
 }
 
-TerrainChunk*	Renderer::findFurthestChunk() {
-	TerrainChunk* t;
-	
+TerrainChunk*	Renderer::findFurthestChunk() {	
 	TerrainChunk* retChunk = *testChunk.begin();
 	Vector3 cp		  = camera->GetPosition();
 
@@ -240,7 +242,4 @@ TerrainChunk*	Renderer::findFurthestChunk() {
 	}
 
 	return retChunk;
-	
-	
-	return t;
 }

@@ -10,16 +10,13 @@ int TerrainChunk::toGridPos(float n){
 	return (int) ((n / TERRAIN_SPACING_X) / TERRAIN_GRID_WIDTH);
 }
 
-
 TerrainChunk::TerrainChunk(int x, int z) {
-	
 	indices			= NULL;
 	textureCoords	= NULL;
 	numIndices		= NULL;
 
 	reassign(x ,z);
 }
-
 
 TerrainChunk::TerrainChunk(Vector3 wPos) {
 	worldPos = wPos;
@@ -157,11 +154,11 @@ int TerrainChunk::getCaseNumber(int x, int y, int z){
 	int caseNo = 0;
 	int valToOr = 1;
 	for(int i = 0; i < 8; i++){
-		int toCheckX = x + gridCheckPoints[i].x;
-		int toCheckY = y + gridCheckPoints[i].y;
-		int toCheckZ = z + gridCheckPoints[i].z;
+		int toCheckX = x + (int)gridCheckPoints[i].x;
+		int toCheckY = y + (int)gridCheckPoints[i].y;
+		int toCheckZ = z + (int)gridCheckPoints[i].z;
 
-		float val = noise[toCheckX][toCheckY][toCheckZ];
+		double val = noise[toCheckX][toCheckY][toCheckZ];
 
 
 
@@ -216,7 +213,6 @@ int TerrainChunk::getCaseNumber(Vector3 pos){
 	return caseNo;
 }
 
-
 //Temp..
 int TerrainChunk::getNumVerticesFromCase(int caseNo){
 	int retValue = 0;
@@ -227,7 +223,6 @@ int TerrainChunk::getNumVerticesFromCase(int caseNo){
 	
 	return retValue;
 }
-
 
 //OLD
 void TerrainChunk::generateNoiseForChunk(){
@@ -287,7 +282,6 @@ void TerrainChunk::generateNoiseForChunk(){
 
 //UNUSED
 void TerrainChunk::generateThisBlock(){
-	
 	for(int x = 0; x < TERRAIN_NOISE_SIZE; x++){
 		for(int y = 0; y < TERRAIN_NOISE_SIZE; y++){
 			for(int z = 0; z < TERRAIN_NOISE_SIZE; z++){
@@ -298,17 +292,12 @@ void TerrainChunk::generateThisBlock(){
 				//TEMP
 				double noiseInput = 0;
 				
-				
 				if(y<3) noiseInput =1;
-			
 
 				if(y==32) noiseInput = -1;
-				
-				
 			}
 		}
 	}
-
 }
 
 void TerrainChunk::BufferData()	{
@@ -370,53 +359,54 @@ void TerrainChunk::BufferData()	{
 }
 
 void TerrainChunk::initNoiseLayers(){
-	srand(time(NULL));
+	time_t  timev;
+	srand(time(&timev));
 	
 	Vector3 samplePoint;
-	samplePoint.x = (double)(rand()%10000 * 0.001) * (rand()%1000);
-	samplePoint.y = (double)(rand()%10000 * 0.001) * (rand()%1000);
-	samplePoint.z = (double)(rand()%10000 * 0.001) * (rand()%1000);
+	samplePoint.x = (double)(rand()%10000 * 0.001) * (rand()%500 + 500);
+	samplePoint.y = (double)(rand()%10000 * 0.001) * (rand()%500 + 500);
+	samplePoint.z = (double)(rand()%10000 * 0.001) * (rand()%500 + 500);
 
 	for(int x = 0; x < NOISE_LAYER_1; x++){
 		for(int y = 0; y < NOISE_LAYER_1; y++){
 			for(int z = 0; z < NOISE_LAYER_1; z++){
-				noiseLayer1[x][y][z] = NoiseFunc::perlinNoise3D(samplePoint.x+x,samplePoint.y+y,samplePoint.z+z,8,0.25);
+				noiseLayer1[x][y][z] = NoiseFunc::perlinNoise3D(samplePoint.x+x,samplePoint.y+y,samplePoint.z+z,4,0.25);
 			}
 		}
 	}
 
-	samplePoint.x = (double)(rand()%10000 * 0.001) * (rand()%1000);
-	samplePoint.y = (double)(rand()%10000 * 0.001) * (rand()%1000);
-	samplePoint.z = (double)(rand()%10000 * 0.001) * (rand()%1000);
+	samplePoint.x = (double)(rand()%10000 * 0.001) * (rand()%500 + 500);
+	samplePoint.y = (double)(rand()%10000 * 0.001) * (rand()%500 + 500);
+	samplePoint.z = (double)(rand()%10000 * 0.001) * (rand()%500 + 500);
 
 	for(int x = 0; x < NOISE_LAYER_2; x++){
 		for(int y = 0; y < NOISE_LAYER_2; y++){
 			for(int z = 0; z < NOISE_LAYER_2; z++){
-				noiseLayer2[x][y][z] = NoiseFunc::perlinNoise3D(samplePoint.x+x,samplePoint.y+y,samplePoint.z+z,8,0.125);
+				noiseLayer2[x][y][z] = NoiseFunc::perlinNoise3D(samplePoint.x+x,samplePoint.y+y,samplePoint.z+z,4,0.125);
 			}
 		}
 	}
 
-	samplePoint.x = (double)(rand()%10000 * 0.001) * (rand()%1000);
-	samplePoint.y = (double)(rand()%10000 * 0.001) * (rand()%1000);
-	samplePoint.z = (double)(rand()%10000 * 0.001) * (rand()%1000);
+	samplePoint.x = (double)(rand()%10000 * 0.001) * (rand()%500 + 500);
+	samplePoint.y = (double)(rand()%10000 * 0.001) * (rand()%500 + 500);
+	samplePoint.z = (double)(rand()%10000 * 0.001) * (rand()%500 + 500);
 	
 	for(int x = 0; x < NOISE_LAYER_3; x++){
 		for(int y = 0; y < NOISE_LAYER_3; y++){
 			for(int z = 0; z < NOISE_LAYER_3; z++){
-				noiseLayer3[x][y][z] = NoiseFunc::perlinNoise3D(samplePoint.x+x,samplePoint.y+y,samplePoint.z+z,8,0.06125);
+				noiseLayer3[x][y][z] = NoiseFunc::perlinNoise3D(samplePoint.x+x,samplePoint.y+y,samplePoint.z+z,4,0.06125);
 			}
 		}
 	}
 
-	samplePoint.x = (double)(rand()%10000 * 0.001) * (rand()%1000);
-	samplePoint.y = (double)(rand()%10000 * 0.001) * (rand()%1000);
-	samplePoint.z = (double)(rand()%10000 * 0.001) * (rand()%1000);
+	samplePoint.x = (double)(rand()%10000 * 0.001) * (rand()%500 + 500);
+	samplePoint.y = (double)(rand()%10000 * 0.001) * (rand()%500 + 500);
+	samplePoint.z = (double)(rand()%10000 * 0.001) * (rand()%500 + 500);
 	
 	for(int x = 0; x < NOISE_LAYER_4; x++){
 		for(int y = 0; y < NOISE_LAYER_4; y++){
 			for(int z = 0; z < NOISE_LAYER_4; z++){
-				noiseLayer4[x][y][z] = NoiseFunc::perlinNoise3D(samplePoint.x+x,samplePoint.y+y,samplePoint.z+z,8,0.06125);
+				noiseLayer4[x][y][z] = NoiseFunc::perlinNoise3D(samplePoint.x+x,samplePoint.y+y,samplePoint.z+z,4,0.06125);
 			}
 		}
 	}

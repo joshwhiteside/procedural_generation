@@ -9,7 +9,7 @@ void Camera::UpdateCamera(float msec)	{
 	pitch = min(pitch,90.f);
 	pitch = max(pitch,-90.0f);
 
-	if(Window::GetKeyboard()->KeyDown(KEYBOARD_Q)) speed *= 0.1f;
+	if(!Window::GetKeyboard()->KeyDown(KEYBOARD_Q)) speed *= 0.1f;
 
 	if(yaw<0)	{
 		yaw+=360.0f;
