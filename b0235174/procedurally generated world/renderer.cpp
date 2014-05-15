@@ -12,12 +12,15 @@ Renderer::Renderer(Window &parent) : OGLRenderer(parent) {
 
 	init = true;
 
-	noise64 = NoiseFunc::generate3DNoiseTexture(64,64,64);
-	
+	noise64  = NoiseFunc::generate3DNoiseTexture(64,64,64);
+	cloudTex = NoiseFunc::generate3DNoiseTexture(1024,1024,8); 
+
 	zTimer = 0.0f;
+	fTimer = 0.0f;
+	cTimer = 0.0f;
+
 	camera->UpdateCamera(1.0f);
 	glEnable(GL_DEPTH_TEST);
-
 }
 
 Renderer::~Renderer() {
@@ -34,8 +37,8 @@ void Renderer::reloadShaders() {
 }
 
 bool Renderer::loadResources() {
-	testSquare = Mesh::GenerateQuad();
-	skyquad = Mesh::GenerateQuad();
+	testSquare  = Mesh::GenerateQuad();
+	skyquad		= Mesh::GenerateQuad();
 
 	for(int x = 0; x < CHUNK_GRID_SIZE; x++){
 		for(int z = 0; z < CHUNK_GRID_SIZE; z++){
@@ -55,13 +58,13 @@ bool Renderer::loadResources() {
 	}
 
 	
-	skyShader = new Shader(SHADERDIR"skyboxVertex.glsl", SHADERDIR"tempTestFrag.glsl"); //
+	skyShader = new Shader(SHADERDIR"skyboxVertex.glsl", SHADERDIR"skyboxFragment.glsl"); //
 
 	if(!skyShader->LinkProgram()){
 		cout << "fuck" << endl;
 	}
 
-	cloudShader = new Shader(SHADERDIR"skyboxVertex.glsl", SHADERDIR"tempTestFrag.glsl"); //
+	cloudShader = new Shader(SHADERDIR"skyboxVertex.glsl", SHADERDIR"cloudFragment.glsl"); //
 
 	if(!cloudShader->LinkProgram()){
 		cout << "fuck" << endl;
@@ -76,17 +79,18 @@ bool Renderer::loadResources() {
 
 void Renderer::UpdateScene(float msec){
 	camera->UpdateCamera(msec);
-	zTimer += msec * 0.0005;
+	zTimer += msec * 0.0005f;
+	fTimer += msec * 0.1f;
+	cTimer += msec * 0.00001f;
+	//if(fTimer > F_TIMER_MAX ) fTimer -= F_TIMER_MAX;
 	if(zTimer>1.0f) zTimer -=1.0f;
 	updateTerrain();
 
 	light->SetPosition(camera->GetPosition());
 
-	
 	if(Window::GetKeyboard()->KeyTriggered(KEYBOARD_RETURN)){
 		NoiseFunc::perlinNoise3D(camera->GetPosition().x,camera->GetPosition().y,camera->GetPosition().z,9,0.75f);
-	}
-	
+	}	
 }
 
 void Renderer::RenderScene(void){
@@ -115,7 +119,7 @@ void Renderer::RenderScene(void){
 	
 	
 		glUniform1i(glGetUniformLocation(currentShader->GetProgram(), "noiseTex"),20);
-		glUniform1f(glGetUniformLocation(currentShader->GetProgram(), "timer"),zTimer);
+		glUniform1f(glGetUniformLocation(currentShader->GetProgram(), "timer"),fTimer);
 		glUniform3fv(glGetUniformLocation(currentShader->GetProgram(),
 			"cameraPos"), 1, (float*)&camera->GetPosition());
 	
@@ -135,7 +139,6 @@ void Renderer::RenderScene(void){
 }
 
 void Renderer::RenderSky() {
-	
 	glDepthMask(GL_FALSE);
 	glDisable(GL_CULL_FACE);
 	SetCurrentShader(skyShader);
@@ -148,24 +151,37 @@ void Renderer::RenderSky() {
 	modelMatrix.ToIdentity();
 
 	UpdateShaderMatrices();
+	
+	glActiveTexture(GL_TEXTURE20);
+	glBindTexture(GL_TEXTURE_3D,noise64);
+	
+	glUniform1i(glGetUniformLocation(currentShader->GetProgram(), "noiseTex"),20);
+	glUniform1f(glGetUniformLocation(currentShader->GetProgram(), "time"),fTimer);
 
 	skyquad->Draw();
 
 	glUseProgram(0);
-	/*
+	
 	SetCurrentShader(cloudShader);
 
 	UpdateShaderMatrices();
 
+	
+	glActiveTexture(GL_TEXTURE20);
+	glBindTexture(GL_TEXTURE_3D,cloudTex);
+	
+	glUniform1i(glGetUniformLocation(currentShader->GetProgram(), "cloudTex"),20);
+	glUniform1f(glGetUniformLocation(currentShader->GetProgram(), "time"),cTimer);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	skyquad->Draw();
-	*/
+	glDisable(GL_BLEND);
 	glUseProgram(0);
 	
 	glDepthMask(GL_TRUE);
 	
 	glEnable(GL_CULL_FACE);
 }
-
 
 void Renderer::RenderNoiseCheck() {
 	//Messy test shit
@@ -188,7 +204,6 @@ void Renderer::RenderNoiseCheck() {
 
 	testSquare->Draw();
 }
-
 
 void	Renderer::updateTerrain(){
 	
@@ -213,8 +228,7 @@ void	Renderer::updateTerrain(){
 			
 		cameraGridX = x;
 		cameraGridZ = y;
-}
-
+}	 
 
 void	Renderer::RequestNewTerrain(int x, int y) {	
 	for(vector<TerrainChunk*>::iterator i = testChunk.begin(); i != testChunk.end(); i++){

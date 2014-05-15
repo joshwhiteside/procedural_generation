@@ -16,6 +16,8 @@ const float LIGHT_RADIUS = 5000.0f;
 #define CHUNK_LOAD_RADIUS 6
 #define CHUNK_GRID_SIZE 9
 
+const float F_TIMER_MAX =  128.0f * 3.142f;
+
 class Renderer : public OGLRenderer		{
 public:
 	Renderer(Window &parent);
@@ -42,11 +44,12 @@ protected:
 	Light* light;
 
 	GLuint noise64;
+	GLuint cloudTex;
 
 	Camera*		camera;
 	float cameraGridX, cameraGridZ;
 
-	float zTimer;
+	float zTimer,fTimer,cTimer;
 	
 	void updateTerrain();
 	void RequestNewTerrain(int x, int y);
