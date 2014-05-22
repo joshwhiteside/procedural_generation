@@ -104,6 +104,15 @@ void main(void){
 	
 
 	gl_FragColor.rgb = hueSwitch(gl_FragColor.rgb,texture(noiseTex, vec3(IN.normal.xyz + (time * 0.001))) );
-//	 
+//	
+	vec4 blue  = vec4(0.25,0.6,0.95,1.0);
+	vec4 white  = vec4(1.0,1.0,1.0,1.0);
+	vec4 sky = mix(white,blue,(IN.normal.y+1)*0.5);
+	
+	gl_FragColor = mix(gl_FragColor, sky , 0.95);
+	//gl_FragColor = sky;
+	
+
+ 
 	gl_FragColor.a = 1.0;
 }

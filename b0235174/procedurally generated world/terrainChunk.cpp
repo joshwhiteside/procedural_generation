@@ -27,7 +27,6 @@ TerrainChunk::TerrainChunk(Vector3 wPos) {
 	numIndices		= NULL;
 
 	GenerateNewChunk(wPos);
-	
 }
 
 bool TerrainChunk::isSameGridPos(int x, int z){
@@ -59,7 +58,6 @@ void TerrainChunk::GenerateNewChunk(Vector3 wPos) {
 	glDeleteBuffers(1, &bufferObject[COLOUR_BUFFER]);
 	glDeleteBuffers(1, &bufferObject[NORMAL_BUFFER]);
 	
-
 	//Hopefully we can get rid of this soon.
 	generateNoiseForChunk();
 
@@ -118,8 +116,6 @@ void TerrainChunk::GenerateNewChunk(Vector3 wPos) {
 					genNormals.push_back(normalToInsert);
 
 				}
-
-
 			}
 		}
 	}
@@ -133,7 +129,7 @@ void TerrainChunk::GenerateNewChunk(Vector3 wPos) {
 	vector<Vector4>::iterator coli = genColours.begin();
 	vector<Vector3>::iterator normi = genNormals.begin();
 	for(vector<Vector3>::iterator i = genVertices.begin(); i != genVertices.end(); i++){
-		vertices[index] = (*i);
+		vertices[index]= (*i);
 		colours[index] = (*coli);
 		normals[index] = (*normi);
 		coli++; normi++;
@@ -149,7 +145,6 @@ void TerrainChunk::GenerateNewChunk(Vector3 wPos) {
 
 int TerrainChunk::getCaseNumber(int x, int y, int z){
 	Vector3 currentPos = worldPos + Vector3(x * TERRAIN_SPACING_X, y * TERRAIN_SPACING_Y, z * TERRAIN_SPACING_Z);
-				
 	
 	int caseNo = 0;
 	int valToOr = 1;
@@ -159,26 +154,13 @@ int TerrainChunk::getCaseNumber(int x, int y, int z){
 		int toCheckZ = z + (int)gridCheckPoints[i].z;
 
 		double val = noise[toCheckX][toCheckY][toCheckZ];
-
-
-
-
-
-		//FLOOR + CEILING TEST
-		//if(val < 0.5) caseNo |= valToOr;
-
-		//NOISE TEST
-		//WHO KNOWS WHY THE RANGE OF THE NOISE IS KINDA IN THE RANGE -6 to 6 :'( 
 		
-		double sparsity = sin((currentPos.x + currentPos.z) * 0.01); 
-		//cout << sparsity << endl;
-
+		//Sparsity causes little holes :(
+		double sparsity = (((sin((currentPos.x + currentPos.z) * 0.001)))); 
+		//double sparsity = 0;
 		if(val > sparsity) caseNo |= valToOr;
 
-
-
 		valToOr *= 2;
-
 	}
 
 	return caseNo;
@@ -262,8 +244,6 @@ void TerrainChunk::generateNoiseForChunk(){
 				noiseY = 1.0 - noiseY;
 				//if(noiseY!=1)cout << noiseY << endl;
 				
-				noiseInput *= noiseY * noiseY * noiseY * noiseY;
-				
 				if(y>24) noiseInput -= 0.5;
 				if(y<2) noiseInput =1;
 				if(y==32) noiseInput = -1;
@@ -343,7 +323,6 @@ void TerrainChunk::BufferData()	{
 			normals, GL_DYNAMIC_DRAW);
 		glVertexAttribPointer(NORMAL_BUFFER, 3, GL_FLOAT, GL_FALSE, 0, 0);
 		glEnableVertexAttribArray(NORMAL_BUFFER);
-
 	}
 
 	if(tangents) {
@@ -425,11 +404,10 @@ double TerrainChunk::fetchNoise(Vector3 pos){
 
 	double total = 0;
 
-
 	total+= noiseLayer1[x%NOISE_LAYER_1][y%NOISE_LAYER_1][z%NOISE_LAYER_1];
 	total+= noiseLayer2[x%NOISE_LAYER_2][y%NOISE_LAYER_2][z%NOISE_LAYER_2];
 	total+= noiseLayer3[x%NOISE_LAYER_3][y%NOISE_LAYER_3][z%NOISE_LAYER_3];
 	total+= noiseLayer4[x%NOISE_LAYER_4][y%NOISE_LAYER_4][z%NOISE_LAYER_4];
 
-	return total;
+	return total * 0.2;
 }

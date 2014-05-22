@@ -1,7 +1,5 @@
 #include "renderer.h"
 
-
-
 Renderer::Renderer(Window &parent) : OGLRenderer(parent) {
 	TerrainChunk::initNoiseLayers(); //Saves loading time later..
 

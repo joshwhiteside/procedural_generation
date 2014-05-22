@@ -59,9 +59,7 @@ vec4 getMarble() {
 	//samplePoint.z = sin(samplePoint.z) + samplePoint.z;
 	
 	float temp = texture(noiseTex, vec3(samplePoint)).r;
-	
-	temp = temp;
-	
+		
 	vec4 red = vec4(1.0,0.5,0.0,1.0);
 	vec4 blue = vec4(0.0,0.8,1.0,1.0);
 	

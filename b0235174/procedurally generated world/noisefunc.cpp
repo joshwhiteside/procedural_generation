@@ -51,7 +51,7 @@ GLuint NoiseFunc::generate3DNoiseTexture(int xSize, int ySize, int zSize) {
 double NoiseFunc::perlinNoise3D(double x, double y, double z, int octaves, double persistence){
 	double total = 0;
 
-	for(int i = 0; i < octaves -1; i++){
+	for(int i = 0; i < octaves; i++){
 		double frequency = pow(2,(double)i);
 		double amplitude = pow(persistence,(double)i);
 		

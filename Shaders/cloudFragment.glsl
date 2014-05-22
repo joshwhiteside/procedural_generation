@@ -2,11 +2,8 @@
 
 uniform vec3		cameraPos;
 uniform float		time;
-
 uniform float		dayRatio;//
-
 uniform vec3 lightPos;
-
 uniform sampler3D cloudTex;
 
 in Vertex	{
@@ -15,20 +12,10 @@ in Vertex	{
 
 out vec4 gl_FragColor;
 
-
 uniform vec4 auroraColour2= vec4(0.0,0.0,1.0,1.0);
 uniform vec4 auroraColour = vec4(0.0,1.0,0.0,1.0);
 
-
 int max_iterations = 20;
-
-
-
-
-vec4 getColour(vec3 i) {
-	vec4 value1 = vec4(1.0,0.0,1.0,1.0);		
-	return value1;
-}
 
 vec3 hueSwitch(vec3 c, float shift) {
 	vec3 retValue;
@@ -54,43 +41,8 @@ vec3 hueSwitch(vec3 c, float shift) {
 	return retValue;
 }
 
-vec4 getAurora(vec2 z) {
-	vec4 outputcolour = auroraColour;
-	
-	int iterations = 0;
-	
-	vec2 original = z;
-	
-	float threshold_squared = 2.0 + (sin (time * 0.0075) + sin(time * 0.01)) * 0.05;
-	
-	while(iterations < max_iterations && dot(z,z) < threshold_squared){
-	
-	
-		vec2 z_squared;
-		z_squared.x = (z.x * z.x) - (z.y * z.y);
-		z_squared.y = 2.0 * z.x * z.y;		
-		z = sin(z_squared) + 0.5;
-		
-		iterations++;
-	}
-	if(iterations == max_iterations) {
-		outputcolour = vec4(1.0,0.0,0.0,0.0);
-		
-		return outputcolour;
-	} else {
-	
-		float f = iterations;
-		f /= max_iterations;
-	
-		
-		outputcolour = mix(auroraColour,auroraColour2, f);
-	}
-
-	return outputcolour;
-}
-
 void main(void){
-	vec3 cloudPos = vec3(normalize(IN.normal));
+	vec3 cloudPos = vec3(normalize(IN.normal+vec3(time)));
 	//cloudPos.x += time;
 	cloudPos.xy = vec2(cloudPos.x , cloudPos.y * cloudPos.z);
 	cloudPos *= 0.0125;
@@ -99,7 +51,13 @@ void main(void){
 	
 	float cloudVal =  0.25;
 	cloudVal += texture(cloudTex, cloudPos);
-	cloudVal *= cloudVal;
+	//cloudVal *= cloudVal;
 	
-	gl_FragColor = vec4(1.0,1.0,1.0,cloudVal );
+	//gl_FragColor = vec4(1.0,1.0,1.0,cloudVal );
+	
+	float transparency = (cloudVal * cloudVal) - 0.5;
+	
+	gl_FragColor = vec4(cloudVal ,cloudVal ,cloudVal ,transparency);
+	
+	
 }
